@@ -19,7 +19,7 @@ import server.ServerHandler;
  * Created by magic_000 on 29/09/2017.
  */
 public class Main {
-    public static void main(String[] args)  throws InterruptedException {
+    public static void main(String... args)  throws InterruptedException {
 
         // tạo group cha
         NioEventLoopGroup bootstrapGroup= new NioEventLoopGroup();

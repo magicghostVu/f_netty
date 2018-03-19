@@ -49,7 +49,6 @@ public class Person implements CanCreateData {
 
     @Override
     public int calSize() {
-
         // age = int, String
         int res = Integer.SIZE + Integer.SIZE + name.length() * Character.SIZE;
         return res;
