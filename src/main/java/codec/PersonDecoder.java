@@ -11,12 +11,16 @@ import java.util.List;
 /**
  * Created by magic_000 on 29/09/2017.
  */
-public class PersonDecoder extends ByteToMessageDecoder {
+public class PersonDecoder extends ByteToMessageDecoder{
+
+
+
+    //tham số listOut, không hiểu sao netty sử dụng list nhưng đó là data được lấy ra sau khi decode
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext,
-                          ByteBuf byteBuf, List<Object> list) throws Exception {
+                          ByteBuf byteBufIn, List<Object> listOut) throws Exception {
 
-        int length = byteBuf.readableBytes();
+        int length = byteBufIn.readableBytes();
 
         System.out.println("length is "+ length);
 
@@ -28,10 +32,10 @@ public class PersonDecoder extends ByteToMessageDecoder {
         byte[] rawBytes = new byte[length];
 
         // read all bytes
-        byteBuf.readBytes(rawBytes, 0, length);
+        byteBufIn.readBytes(rawBytes, 0, length);
 
         Person p = Utils.fromByteArr(rawBytes);
 
-        list.add(p);
+        listOut.add(p);
     }
 }

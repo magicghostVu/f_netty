@@ -1,4 +1,4 @@
-package pojos;
+package response;
 
 import abs.to_byte_arr.CanCreateData;
 
@@ -31,5 +31,13 @@ public class BaseResponseMsg implements CanCreateData {
     @Override
     public int calSize() {
         return Integer.SIZE / Byte.SIZE;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

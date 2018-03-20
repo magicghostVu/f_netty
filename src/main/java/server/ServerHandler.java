@@ -31,7 +31,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        super.handlerRemoved(ctx);
+        //super.handlerRemoved(ctx);
         tmpBuffer.release();
         tmpBuffer = null;
         System.out.println("handler removed");
