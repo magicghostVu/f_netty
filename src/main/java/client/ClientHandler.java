@@ -1,6 +1,5 @@
 package client;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import response.BaseResponseMsg;
@@ -30,11 +29,18 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
 
         // tại sao lại đóng kênh truyền ??
-        ctx.close();
+        //ctx.close();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Channel of client inactivated");
+        System.out.println("Channel of client activated");
+    }
+
+
+    // bắt các exception ở đây
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        super.exceptionCaught(ctx, cause);
     }
 }

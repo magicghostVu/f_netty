@@ -13,14 +13,26 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class MainRunClient {
     public static void main(String... args) throws Exception {
+
+        // hard code host and port
         String host = "localhost";
         int portServer = 8081;
+
+
         EventLoopGroup workerLoopGroup = new NioEventLoopGroup();
+
+
         Bootstrap bootstrapClient = new Bootstrap();
         bootstrapClient.group(workerLoopGroup);
+
+
         bootstrapClient.channel(NioSocketChannel.class);
         bootstrapClient.option(ChannelOption.SO_KEEPALIVE, true);
+
+
         bootstrapClient.handler(new ChannelInitClient());
+
+
         ChannelFuture channelFuture = bootstrapClient.connect(host, portServer).sync();
         channelFuture.channel().closeFuture().sync();
     }

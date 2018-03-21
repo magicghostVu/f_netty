@@ -23,9 +23,7 @@ public class Scene implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // do nothings here
-
-        System.out.println();
-
+        //System.out.println();
     }
 
 

@@ -12,12 +12,26 @@ import javafx.stage.Stage;
 public class MyApplication extends Application {
 
 
+
+
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        // khởi tạo client ở đây
+
+
+
+
+
         Parent parent = FXMLLoader.load(getClass().getResource("/scene.fxml"));
         primaryStage.setTitle("My App");
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
+
+
+        // inti
     }
 
 
