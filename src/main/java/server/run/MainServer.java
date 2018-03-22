@@ -43,7 +43,15 @@ public class MainServer {
 
         ChannelFuture channelFuture = serverBootstrap.bind(8081).sync();
 
-        LoggingService.getInstance().getLogger().info("Server socket started");
+        /*LoggingService.getInstance().getLogger().info("Server socket started");
+
+        channelFuture.channel().closeFuture().sync();*/
+
+
+        channelFuture.addListener(f -> {
+            LoggingService.getInstance().getLogger().info("Server socket started");
+            //
+        });
 
         channelFuture.channel().closeFuture().sync();
 
