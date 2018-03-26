@@ -16,8 +16,11 @@ public class ChannelInitClient extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
         /*pipeline.addLast(new RequestEncoder());
         pipeline.addLast(new ResponseDecoder());*/
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 8246f0e039e36ab926ccf7c861813a908573ec78
         pipeline.addLast(new ClientHandler());
     }
 }

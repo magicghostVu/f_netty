@@ -18,6 +18,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
+        //ctx.channel().
 
         ByteBuf byteBuf = (ByteBuf) msg;
         int timeStampInt = byteBuf.readInt();
