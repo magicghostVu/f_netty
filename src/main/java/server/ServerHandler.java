@@ -7,7 +7,6 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
-import io.netty.util.concurrent.GenericFutureListener;
 import log.LoggingService;
 
 /**
@@ -20,16 +19,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         LoggingService.getInstance().getLogger().info("a connection established at {}", ctx.channel().remoteAddress());
-
-
         ByteBuf byteBuf = Unpooled.buffer(4);
         int crTime = (int) (System.currentTimeMillis() / 1000);
         byteBuf.writeInt(crTime);
         ChannelFuture res = ctx.writeAndFlush(byteBuf);
-        GenericFutureListener<ChannelFuture> callBack= f->{
-            ctx.close().addListener(ChannelFutureListener.CLOSE);
-            LoggingService.getInstance().getLogger().info("ref count of byte buf is {}", byteBuf.refCnt());
-        };
+        ChannelFutureListener callBack = f -> LoggingService.getInstance().getLogger().info("timestamp sent to client");
         res.addListener(callBack);
     }
 
@@ -37,19 +31,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     // it work perfect :)), as expected
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf dataIn = Unpooled.copiedBuffer((ByteBuf) msg);
+        ByteBuf byteBuf = (ByteBuf) msg;
+        int timeFromClient = byteBuf.readInt();
+        LoggingService.getInstance().getLogger().info("time from client is {}", timeFromClient);
         ReferenceCountUtil.release(msg);
-        byte[] arr = dataIn.array();
-        dataIn.release();
-        String res = new String(arr);
-        LoggingService.getInstance().getLogger().info("String is {}", res);
-
-
-        ctx.close();
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         LoggingService.getInstance().getLogger().error("err in server handler {} ", cause);
+        ctx.close().addListener(f -> LoggingService.getInstance().getLogger().info("ctx at {} close because exception {}",
+                ctx.channel().remoteAddress(), cause.getMessage()));
     }
 }

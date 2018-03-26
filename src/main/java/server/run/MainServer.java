@@ -35,25 +35,15 @@ public class MainServer {
         //set nơi xử lý chung, khởi tạo kênh kết nối mới, remove kênh disconnect
         serverBootstrap.childHandler(new ChanelInitServer());
 
-
         serverBootstrap.option(ChannelOption.SO_BACKLOG, 128);
 
         serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
 
-
         ChannelFuture channelFuture = serverBootstrap.bind(8081).sync();
 
-        /*LoggingService.getInstance().getLogger().info("Server socket started");
-
-        channelFuture.channel().closeFuture().sync();*/
-
-
-        channelFuture.addListener(f -> {
-            LoggingService.getInstance().getLogger().info("Server socket started");
-            //
-        });
-
-        channelFuture.channel().closeFuture().sync();
+        channelFuture.addListener(f ->
+            LoggingService.getInstance().getLogger().info("Server socket started")
+        );
 
     }
 }
