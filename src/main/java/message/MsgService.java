@@ -29,19 +29,16 @@ public class MsgService {
                             tmp, uid, target.getSocketChannel().remoteAddress()));
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LoggingService.getInstance().getLogger().error("err while send message to user {} because {}", uid, e);
         }
     }
 
-    // gửi một byteBuff đến nhiều
+    // gửi một byteBuff đến nhiều user
     public static void sendMessToManyUser(Collection<User> users, ByteBuf byteBuf) {
-        Consumer<User> sendToUser = u -> {
-            sendByUid(u.getUid(), byteBuf, false);
-        };
+        Consumer<User> sendToUser = u -> sendByUid(u.getUid(), byteBuf, false);
         users.forEach(sendToUser);
         ReferenceCountUtil.release(byteBuf);
-
     }
 
 }

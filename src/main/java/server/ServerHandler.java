@@ -2,15 +2,11 @@ package server;
 
 import entities.User;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
-import io.netty.util.concurrent.GenericFutureListener;
 import log.LoggingService;
 import manage.UserManagementService;
+import message.MsgService;
 
 /**
  * Created by Fresher on 20/03/2018.
@@ -24,19 +20,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         UserManagementService.getInstance().removeUserByChannel(ctx.channel());
     }
 
-    // khi tạo được một kết nối mới
+    // khi tạo được một kết nối mới, thêm một user mới
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         LoggingService.getInstance().getLogger().info("a connection established at {}", ctx.channel().remoteAddress());
-        /*ByteBuf byteBuf = Unpooled.buffer(4);
-        int crTime = (int) (System.currentTimeMillis() / 1000);
-        byteBuf.writeInt(crTime);
-        ChannelFuture res = ctx.writeAndFlush(byteBuf);
-        res.addListener(l->LoggingService.getInstance().getLogger().info("send time to client done"));*/
-
         try {
-            User u= UserManagementService.getInstance().createNewUser(ctx.channel());
-        }catch (Exception e){
+            User u = UserManagementService.getInstance().createNewUser(ctx.channel());
+        } catch (Exception e) {
             LoggingService.getInstance().getLogger().error("err while create user with channel {} err is {}", ctx.channel(), e);
         }
     }
@@ -45,6 +35,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     // it work perfect, có client gửi data lên server
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+
+        User u = UserManagementService.getInstance().getUserByChannel(ctx.channel());
+
+        if (u != null) {
+            LoggingService.getInstance().getLogger().info("User {} send info to server", u.getUid());
+        }
+        ByteBuf data = (ByteBuf) msg;
+
+        MsgService.sendMessToManyUser(UserManagementService.getInstance().getAllUser(), data);
 
 
 

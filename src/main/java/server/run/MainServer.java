@@ -50,7 +50,6 @@ public class MainServer {
 
         channelFuture.addListener(f -> {
             LoggingService.getInstance().getLogger().info("Server socket started");
-            //
         });
 
         channelFuture.channel().closeFuture().sync();

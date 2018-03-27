@@ -4,6 +4,8 @@ import entities.User;
 import io.netty.channel.Channel;
 import log.LoggingService;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -71,6 +73,10 @@ public class UserManagementService {
         }else{
             LoggingService.getInstance().getLogger().info("channel {} is not exist or is is removed before", channel.remoteAddress());
         }
+    }
+
+    public Collection<User> getAllUser(){
+        return mapUidUsers.values();
     }
 
 
