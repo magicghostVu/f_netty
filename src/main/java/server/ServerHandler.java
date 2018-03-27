@@ -2,12 +2,8 @@ package server;
 
 import entities.User;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
 import log.LoggingService;
 import manage.UserManagementService;
 
@@ -34,8 +30,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         res.addListener(l->LoggingService.getInstance().getLogger().info("send time to client done"));*/
 
         try {
-            User u= UserManagementService.getInstance().createNewUser(ctx.channel());
-        }catch (Exception e){
+            User u = UserManagementService.getInstance().createNewUser(ctx.channel());
+        } catch (Exception e) {
             LoggingService.getInstance().getLogger().error("err while create user with channel {} err is {}", ctx.channel(), e);
         }
     }
@@ -44,6 +40,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     // it work perfect, có client gửi data lên server
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+        ByteBuf byteBuf = (ByteBuf) msg;
+
+        int readableBytes = byteBuf.readableBytes();
+
+
+        LoggingService.getInstance().getLogger().info("readable byte is {}", readableBytes);
+
 
 
 

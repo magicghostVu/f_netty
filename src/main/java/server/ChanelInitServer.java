@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import log.LoggingService;
 import manage.UserManagementService;
 
@@ -33,10 +34,20 @@ public class ChanelInitServer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
-        /*pipeline.addLast(new RequestDecoder());
-        pipeline.addLast(new ResponseEncoder());*/
-        //pipeline.addLast(new ServerHandler());
+
+
+        // sử dụng thêm 2 byte đầu tiên để lưu cỡ của package,
+        // và bỏ 2 byte đó đi trong pack (ByteBuf nhận được)
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(128,
+                0,2,0 ,2));
+
+
+        // các buffer xuống đây chỉ còn lại là data nguyên bản
         pipeline.addLast(new ServerHandler());
+
+
+
+        //todo : add các lớp đi ra
 
     }
 
