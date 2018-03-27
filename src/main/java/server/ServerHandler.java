@@ -36,6 +36,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
+        ByteBuf byteBuf = (ByteBuf) msg;
+
+        int readableBytes = byteBuf.readableBytes();
+
+
+        LoggingService.getInstance().getLogger().info("readable byte is {}", readableBytes);
+
+
 
         User u = UserManagementService.getInstance().getUserByChannel(ctx.channel());
 
@@ -61,6 +69,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         LoggingService.getInstance().getLogger().error("err in server handler {} ", cause);
+        ctx.close().addListener(f -> LoggingService.getInstance().getLogger().info("ctx at {} close because exception {}",
+                ctx.channel().remoteAddress(), cause.getMessage()));
     }
 
 
