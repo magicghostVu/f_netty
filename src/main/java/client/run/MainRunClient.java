@@ -7,7 +7,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import log.LoggingService;
 
 /**
  * Created by Fresher on 20/03/2018.
